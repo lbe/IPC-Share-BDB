@@ -2,13 +2,33 @@ IPC::Share::BDB
 
 This is a work in progress (started 12/11/11).  There will be more to come
 
-The goal of this module is to provide objects with convenience methods tied to the BerkeleyDB module to provide hashes and arrays that can be shared between processes and between threads when the hash(es) and/or array(s) is too large to be stored in RAM using threads::share.
+The goal of this module is to provide objects with convenience methods
+tied to the BerkeleyDB module to provide hashes and arrays that can be
+shared between processes and between threads when the hash(es) and/or
+array(s) is too large to be stored in RAM using threads::share.
 
-Additionally, this module provides a queue object, similar to threads::queue, that can be used acrross processes.
+Additionally, this module provides a queue object, similar to
+threads::queue, that can be used acrross processes.
 
-The data store of all objects are based upon Berkeley DB Concurrent Data Store (CDS).  The module handles all locking needed to insure that only a single writer is allowed at any one time.  The selection of CDS was made to favor speed over absolutely integrity.  This means that if an error occurs while a change is being written to the database, that the database will be left in an uncertain state.  Given the overall stability of BerkeleyDB code, this is unlikely, but still possible.  If absolutely reliability is required, then one should use the BerkeleyDB directly and make use of its Transacational Data Store (TDS) capability.
+The data store of all objects are based upon Berkeley DB Concurrent Data
+Store (CDS).  The module handles all locking needed to insure that only
+a single writer is allowed at any one time.  The selection of CDS was
+made to favor speed over absolutely integrity.  This means that if an
+error occurs while a change is being written to the database, that the
+database will be left in an uncertain state.  Given the overall stability
+of BerkeleyDB code, this is unlikely, but still possible.  If absolutely
+reliability is required, then one should use the BerkeleyDB directly
+and make use of its Transacational Data Store (TDS) capability.
 
-As stated above, it is the author's intent that this model be used between processes/threads; hence "thread safe" and "fork safe" are goals that must be achieved in order to be successful.  Care is and has been taken to insure that this module achieves this functionality; however, given the lack of precisely clear definitions for either thread or fork safety, it is very possibly that the author has not adequately contemplated situations that may cause deadlock or race problems.  As such, the author welcomes any feedback, preferably with corrected code to address and tests to validate, problems.
+As stated above, it is the author's intent that this model be used
+between processes/threads; hence "thread safe" and "fork safe" are goals
+that must be achieved in order to be successful.  Care is and has been
+taken to insure that this module achieves this functionality; however,
+given the lack of precisely clear definitions for either thread or
+fork safety, it is very possibly that the author has not adequately
+contemplated situations that may cause deadlock or race problems.
+As such, the author welcomes any feedback, preferably with corrected
+code to address and tests to validate, problems.
 
 INSTALLATION
 
