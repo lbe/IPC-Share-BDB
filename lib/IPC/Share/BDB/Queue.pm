@@ -25,8 +25,10 @@ sub new {
     $env = new IPC::Share::BDB()
       or croak "cannot open environment: $BerkeleyDB::Error\n";
 
-    $dbh = tie my @queue, 'IPC::Share::BDB::Array',
-      -Filename => 'queue.$$.db',
+    my @queue;
+    $dbh = tie @queue, 'IPC::Share::BDB::Array',
+      -Filename => "queue.$$.db",
+      -Flags    => DB_CREATE, 
       -Env      => $env
       or croak "cannot open database: $BerkeleyDB::Error\n";
 
