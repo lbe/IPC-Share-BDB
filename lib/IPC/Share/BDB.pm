@@ -3,6 +3,9 @@ package IPC::Share::BDB;
 use 5.006;
 use strict;
 use warnings;
+use BerkeleyDB;
+
+our @ISA = qw( BerkeleyDB::Env );
 
 =head1 NAME
 
@@ -15,7 +18,6 @@ Version 0.01
 =cut
 
 our $VERSION = '0.01';
-
 
 =head1 SYNOPSIS
 
@@ -35,19 +37,50 @@ if you don't export anything, such as for a purely object-oriented module.
 
 =head1 SUBROUTINES/METHODS
 
-=head2 function1
+=head2 new
 
 =cut
 
-sub function1 {
+sub new {
+
+    # Usage:
+    #
+    #	$env = new BerkeleyDB::Env
+    #			[ -Home		=> $path, ]
+    #			[ -Mode		=> mode, ]
+    #			[ -Config	=> { name => value, name => value }
+    #			[ -ErrFile   	=> filename, ]
+    #			[ -ErrPrefix 	=> "string", ]
+    #			[ -Flags	=> DB_INIT_LOCK| ]
+    #			[ -Set_Flags	=> $flags,]
+    #			[ -Cachesize	=> number ]
+    #			[ -LockDetect	=>  ]
+    #			[ -Verbose	=> boolean ]
+    #			[ -Encrypt	=> { Password => string, Flags => value}
+    #
+    #			;
+
+    my $self = shift;
+    my $class = ( ref $self ) || $self;
+
+    my @args = BerkeleyDB::ParseParameters( 
+        {
+            Home  => "/tmp/bdb",
+            Flags => DB_CREATE | DB_INIT_CDB | DB_INIT_MPOOL
+        },
+        @_
+    );
+        
+    $self = $class->SUPER::new( @args ) or die "cannot open environment: $BerkeleyDB::Error\n";
+    return($self);
 }
 
 =head2 function2
 
 =cut
 
-sub function2 {
-}
+    sub function2 {
+    }
 
 =head1 AUTHOR
 
@@ -108,4 +141,4 @@ See http://dev.perl.org/licenses/ for more information.
 
 =cut
 
-1; # End of IPC::Share::BDB
+    1;    # End of IPC::Share::BDB
