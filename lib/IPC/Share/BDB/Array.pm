@@ -4,11 +4,80 @@ use 5.006;
 use strict;
 use warnings;
 use BerkeleyDB;
-use Carp ;
+use Carp;
 
-our @ISA = qw( BerkeleyDB::Recno );
+use base 'BerkeleyDB::Recno';
 
+our $VERSION = '0.01';
 
+sub STORE {
+    my $self = shift;
+    my $lk   = $self->cds_lock();
+    my $ret  = $self->SUPER::STORE(@_);
+    return $ret;
+}
+
+sub FETCH {
+    my $self = shift;
+    my $lk   = $self->cds_lock();
+    my $ret  = $self->SUPER::FETCH(@));
+    return $ret;
+}
+
+sub CLEAR {
+    my $self = shift;
+    my $lk   = $self->cds_lock();
+    my $ret  = $self->SUPER::CLEAR();
+    return $ret;
+}
+
+sub SHIFT {
+    my $self = shift;
+    my $lk   = $self->cds_lock();
+    my $ret  = $self->SUPER::SHIFT(@_);
+    return $ret;
+}
+
+sub UNSHIFT {
+    my $self = shift;
+    my $lk   = $self->cds_lock();
+    my $ret  = $self->SUPER::UNSHIFT(@_);
+    return $ret;
+}
+
+sub PUSH {
+    my $self = shift;
+    my $lk   = $self->cds_lock();
+    my $ret  = $self->SUPER::PUSH(@_);
+    return $ret;
+}
+
+sub POP {
+    my $self = shift;
+    my $lk   = $self->cds_lock();
+    my $ret  = $self->SUPER::POP(@_);
+    return $ret;
+}
+
+sub SPLICE {
+    my $self = shift;
+    my $lk   = $self->cds_lock();
+    my $ret  = $self->SUPER::SPLICE(@_);
+    return $ret;
+}
+
+sub STORESIZE {
+    my $self = shift;
+    my $lk   = $self->cds_lock();
+    my $ret  = $self->SUPER::STORESIZE(@_);
+    return $ret;
+}
+
+1;    # End of IPC::Share::BDB::Array
+
+__END__
+
+=pod
 
 =head1 NAME
 
@@ -17,11 +86,6 @@ IPC::Share::BDB::Array - a class that ties BerkeleyDB::Recno to a perl array.
 =head1 VERSION
 
 Version 0.01
-
-=cut
-
-our $VERSION = '0.01';
-
 
 =head1 SYNOPSIS
 
@@ -47,19 +111,6 @@ The following methods are used by perl Tie and should not be called directly.
 
 =head2 new
 
-
-=cut
-
-sub new {
-	my $type = shift;
-	my $class = ref($type) || $type;
-	my $self = $class->SUPER::new(@_);
-	return undef unless defined $self;
-	return bless($self, $class);
-}
-
-#*TIESCALAR = *TIESCALAR = \&new;
-
 =head2 TIEARRAY
 
 The class method is invoked by the command C<tie @array, classname>. Associates
@@ -68,122 +119,39 @@ additional arguments (along the lines of L<AnyDBM_File> and compatriots) needed
 to complete the association. The method should return an object of a class which
 provides the methods below.
 
-=cut 
-
-sub TIEARRAY
-{
-    my $self = shift ;
-    my $lk = $self->cds_lock();
-    my $ret = $self->SUPER::TIEARRAY(@_) ;
-	return $ret;
-}
-
 =head2 STORE
 
 Store datum I<value> into I<index> for the tied array associated with
 object I<this>. If this makes the array larger then
 class's mapping of C<undef> should be returned for new positions.
 
-=cut
-
-sub STORE
-{
-    my $self = shift ;
-    my $lk = $self->cds_lock();
-    my $ret = $self->SUPER::STORE(@_) ;
-	return $ret;
-}
-
 =head2 FETCH
 
 Retrieve the datum in I<index> for the tied array associated with
 object I<this>.
-
-=cut
-
-sub FETCH
-{
-    my $self = shift ;
-	my $lk = $self->cds_lock();
-    my $ret = $self->SUPER::FETCH(@)) ;
-    return $ret ;
-}
-
 
 =head2 CLEAR
 
 Clear (remove, delete, ...) all values from the tied array associated with
 object I<this>.
 
-=cut
-
-sub CLEAR {
-	my $self = shift;
-	my $lk = $self->cds_lock();
-    my $ret = $self->SUPER::CLEAR() ;
-	return $ret;
-}
-
 =head2 SHIFT
 
 Remove the first element of the array (shifting other elements down)
 and return it.
-
-=cut
-
-sub SHIFT
-{
-    my $self = shift;
-	my $lk = $self->cds_lock();
-    my $ret = $self->SUPER::SHIFT(@_) ;
-    return $ret ;
-}
 
 =head2 UNSHIFTthis, LIST
 
 Insert LIST elements at the beginning of the array, moving existing elements
 up to make room.
 
-=cut
-
-sub UNSHIFT
-{
-    my $self = shift;
-	my $lk = $self->cds_lock();
-    my $ret = $self->SUPER::UNSHIFT(@_) ;
-    return $ret ;
-}
-
-
 =head2 PUSH this, LIST
 
 Append elements of LIST to the array.
 
-=cut
-
-sub PUSH
-{
-    my $self = shift;
-	my $lk = $self->cds_lock();
-    my $ret = $self->SUPER::PUSH(@_) ;
-    return $ret ;
-}
-
-
 =head2 POP this
 
 Remove last element of the array and return it.
-
-=cut
-
-sub POP
-{
-    my $self = shift;
-	my $lk = $self->cds_lock();
-    my $ret = $self->SUPER::PUSH(@_) ;
-    return $ret ;
-}
-
 
 =head2 SPLICE  this, offset, length, LIST
 
@@ -202,16 +170,6 @@ I<LIST> may be empty.
 
 Returns a list of the original I<length> elements at I<offset>.
 
-=cut
-
-sub SPLICE
-{
-    my $self = shift;
-	my $lk = $self->cds_lock();
-    my $ret = $self->SUPER::PUSH(@_) ;
-    return $ret ;
-}
-
 =head2 STORESIZE
 
 Not implemented in BerkeleyDB 0.50.  This module is designed to 
@@ -223,18 +181,6 @@ object I<this> to be I<count>. If this makes the array larger then
 class's mapping of C<undef> should be returned for new positions.
 If the array becomes smaller then entries beyond count should be
 deleted.
-
-
-=cut
-
-sub STORESIZE
-{
-    my $self = shift;
-	my $lk = $self->cds_lock();
-    my $ret = $self->SUPER::PUSH(@_) ;
-    return $ret ;
-}
-
 
 =head1 AUTHOR
 
@@ -292,7 +238,4 @@ by the Free Software Foundation; or the Artistic License.
 
 See http://dev.perl.org/licenses/ for more information.
 
-
 =cut
-
-1; # End of IPC::Share::BDB::Array
