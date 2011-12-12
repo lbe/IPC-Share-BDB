@@ -31,7 +31,8 @@ given the lack of precisely clear definitions for either thread or
 fork safety, it is very possible that the author has not adequately
 contemplated situations that may cause deadlock or race problems.
 As such, the author welcomes any feedback, preferably with corrected
-code to address and tests to validate, problems
+code to address and tests to validate, problems.
+
 
 
 INSTALLATION
