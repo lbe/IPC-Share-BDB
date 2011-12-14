@@ -2,12 +2,20 @@ Build.PL
 Changes
 lib/IPC/Share/BDB.pm
 lib/IPC/Share/BDB/Array.pm
-lib/IPC/Share/BDB/Base.pm
 lib/IPC/Share/BDB/Hash.pm
 lib/IPC/Share/BDB/Queue.pm
 MANIFEST			This list of files
 README
 t/00-load.t
-t/manifest.t
-t/pod-coverage.t
-t/pod.t
+t/02-recno.t
+t/03-hash.t
+t/04-queue.t
+t/util.pm
+t/Test/More.pm
+t/Test/Builder.pm
+MYMETA.yml
+MYMETA.json
+
+Makefile.PL
+META.yml
+META.json

@@ -1,4 +1,4 @@
-package IPC::Share::BDB::Array;
+package IPC::Share::BDB::Hash;
 
 use 5.006;
 use strict;
@@ -34,7 +34,7 @@ sub EXISTS {
 sub FETCH {
     my $self = shift;
     my $lk   = $self->cds_lock();
-    my $ret  = $self->SUPER::FETCH(@));
+    my $ret  = $self->SUPER::FETCH(@_);
     return $ret;
 }
 

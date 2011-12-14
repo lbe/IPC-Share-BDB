@@ -13,7 +13,7 @@ our $VERSION = '0.01_01';
 sub FETCH {
     my $self = shift;
     my $lk   = $self->cds_lock();
-    my $ret  = $self->SUPER::FETCH(@));
+    my $ret  = $self->SUPER::FETCH(@_);
     return $ret;
 }
 

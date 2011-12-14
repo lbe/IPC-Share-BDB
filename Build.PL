@@ -6,7 +6,7 @@ use Module::Build;
 my $builder = Module::Build->new(
     module_name         => 'IPC::Share::BDB',
     license             => 'perl',
-    dist_author         => q{lbe <learnedbyerror@gmail.com>},
+    dist_author         => q{lbe <lbe@cpan.org>},
     dist_version_from   => 'lib/IPC/Share/BDB.pm',
     build_requires => {
         'Test::More' => 0,
